@@ -1,0 +1,102 @@
+/* Universal Body Styling */
+body {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: #3498db; /* Default blue background */
+}
+
+/* Container for the layout */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  width: 80%;
+  padding: 20px;
+}
+
+/* General Section Styles */
+section {
+  padding: 20px;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-top: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+h2 {
+  font-size: 2rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+a {
+  color: #ffcc00;
+  text-decoration: none;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #444;
+  color: white;
+  border-radius: 10px;
+}
+
+.back-button:hover {
+  background-color: #666;
+}
+
+/* Staff Member Specific Styles */
+.staff-member {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.staff-avatar {
+  width: 50px;  /* Adjusted size */
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.staff-member p {
+  font-size: 1.2rem;
+  margin-left: 10px;
+}
+
+/* Main Page Styles */
+.index {
+  background-color: #2ecc71; /* Green background for index page */
+}
+
+.staff {
+  background-color: #e74c3c; /* Red background for staff page */
+}
