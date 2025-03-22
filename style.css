@@ -192,29 +192,60 @@ a:hover {
 }
 
 /* Page-Specific Styles */
+.index, .staff, .rules, .server {
+  position: relative;
+  overflow: hidden;
+}
+
+.index::before, .staff::before, .rules::before, .server::before {
+  content: "★ ✦ ✧ ✩ ✪ ✫ ✬ ✭ ✮ ✯ ✰ ☾ ☀ ☁ ☂ ☄ ☉ ☽ ✨ ";
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.15); /* Subtle white glow */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300%;
+  height: 300%;
+  display: block;
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: moveSymbols 15s infinite linear;
+  pointer-events: none; /* Prevent interaction */
+}
+
+@keyframes moveSymbols {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-50px, -50px);
+  }
+}
+
+/* Shiny animated backgrounds */
 .index {
-  background-color: #8a2be2; /* Shiny purple */
+  background-color: #8a2be2;
   background-image: linear-gradient(135deg, #8a2be2, #d17fff, #a855f7);
   background-size: 400% 400%;
   animation: shimmer 3s infinite linear;
 }
 
 .staff {
-  background-color: #e74c3c; /* Shiny red */
+  background-color: #e74c3c;
   background-image: linear-gradient(135deg, #e74c3c, #ff6b6b, #ff4757);
   background-size: 400% 400%;
   animation: shimmer 3s infinite linear;
 }
 
 .rules {
-  background-color: #f39c12; /* Shiny yellow */
+  background-color: #f39c12;
   background-image: linear-gradient(135deg, #f39c12, #ffd700, #ffcc00);
   background-size: 400% 400%;
   animation: shimmer 3s infinite linear;
 }
 
 .server {
-  background-color: #3498db; /* Shiny blue */
+  background-color: #3498db;
   background-image: linear-gradient(135deg, #3498db, #74b9ff, #00cec9);
   background-size: 400% 400%;
   animation: shimmer 3s infinite linear;
@@ -231,4 +262,3 @@ a:hover {
     background-position: 0% 50%;
   }
 }
-
