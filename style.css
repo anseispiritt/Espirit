@@ -13,40 +13,6 @@ body {
   text-align: center;
 }
 
-/* Fading Overlay Styles */
-.fade-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Dark background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 4s ease-out; /* Fade duration */
-}
-
-/* Fading Image Styles */
-.fade-image {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  animation: fadeOut 4s forwards; /* Fade-out animation for image */
-}
-
-/* Fading out the image */
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
 /* Header Styling */
 header {
   margin-top: 40px;
@@ -146,6 +112,47 @@ footer {
     font-size: 1.6rem;
     padding: 12px 25px;
   }
+}
+
+/* Staff Member Specific Styles */
+.staff-member {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.staff-avatar {
+  width: 30px;  /* Smaller size for profile pictures */
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.staff-member p {
+  font-size: 1rem;  /* Adjusted font size for better alignment */
+  margin-left: 10px;
+}
+
+/* Separator Styling */
+.staff-separator {
+  border: none;
+  border-top: 1px solid #fff;  /* Creates a line between staff members */
+  margin: 10px 0;
+}
+
+/* Back Button Styling */
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #444;
+  color: white;
+  border-radius: 10px;
+}
+
+.back-button:hover {
+  background-color: #666;
 }
 
 /* Universal Box Styling for All Pages */
