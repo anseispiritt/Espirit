@@ -11,17 +11,14 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="server">
-  <!-- Fade overlay image -->
-  <div class="fade-overlay">
-    <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="fade-image">
-  </div>
-
   <header>
+    <!-- Image beside the site title -->
     <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="server-logo">
     <h1>Espirit Server Information 🌐</h1>
   </header>
 
   <div class="container">
+    <!-- Server Info Section -->
     <div class="box">
       <section>
         <p><strong>Owner:</strong> Spirit ✨</p>
@@ -43,15 +40,5 @@
   </div>
 
   <a href="index.html" class="back-button">🔙 Back to Main</a>
-
-  <!-- JavaScript for fading out the image -->
-  <script>
-    window.onload = function() {
-      const fadeOverlay = document.querySelector('.fade-overlay');
-      setTimeout(() => {
-        fadeOverlay.classList.add('fade-out');
-      }, 100);
-    };
-  </script>
 </body>
 </html>
