@@ -3,42 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Espirit - Server Info</title>
-
+  <title>Espirit - Staff</title>
+  
   <!-- Favicon -->
   <link rel="icon" href="https://i.postimg.cc/SxY1FbGv/standard.webp" type="image/webp" />
   
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="server">
+<body class="staff">
+  <!-- Fade overlay image -->
+  <div class="fade-overlay">
+    <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="fade-image">
+  </div>
+
   <header>
-    <!-- Image beside the site title -->
     <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="server-logo">
-    <h1>Espirit Server Information 🌐</h1>
+    <h1>Meet Our Staff 👤</h1>
   </header>
 
   <div class="container">
-    <!-- Server Info Section -->
     <div class="box">
-      <section>
-        <p><strong>Owner:</strong> Spirit ✨</p>
+      <section class="staff-member">
+        <img src="https://cdn.discordapp.com/avatars/1311799103482495031/ab3ef42cb18aa5265c458436d53e899f.webp?size=512" alt="Spirit" class="staff-avatar">
+        <p>Spirit — Chill 14-year-old server owner | Not good at talking 🧑‍💻</p>
       </section>
-      <section>
-        <p><strong>Admins:</strong> Essence 🌱 | Mimi 💖 | Richelly 🦄</p>
+      <hr class="staff-separator">
+    </div>
+
+    <div class="box">
+      <section class="staff-member">
+        <img src="https://cdn.discordapp.com/avatars/1159268139847131207/37c959e761d160e44bc03b4fce31f9fd.webp?size=512" alt="Essence" class="staff-avatar">
+        <p>Essence — Likes: nature 🌳 | working out 💪 | gaming 🎮 | watching anime 📺 | listening to music 🎶 | talking to people 🗣️ | giving advice 💡 | true crime 🔍 | Fortnite 🎮 | Pokémon 🐾</p>
       </section>
-      <section>
-        <p><strong>About the Server:</strong><br>
-          About Owner: <a href="https://guns.lol/espirit">🔗 About Owner</a><br>
-          📜 No rules besides no saying the hard "R" N-word 🚫<br>
-          ⛔ Make friends, 13+, cursing allowed, chill environment, growing community 🌱<br>
-          Show off your pets 🐾 and rooms 🏠 in special channels.<br>
-        </p>
-        <p>Join us here: <a href="https://discord.gg/espirit">🔗 Discord Invite</a><br>
-        🌀 Try our commands: !spin 🎉 (spin a wheel to get credits) or check our gambling commands in the information 🃏</p>
+      <hr class="staff-separator">
+    </div>
+
+    <div class="box">
+      <section class="staff-member">
+        <img src="https://cdn.discordapp.com/avatars/1317688362475196480/9060f06757a422863de9bfbf7b20ba5a.webp?size=512" alt="Mimi" class="staff-avatar">
+        <p>Mimi — ᢉ𐭩 cupid ᢉ𐭩 ⊹ ࣪ ˖ she/her ⊹ ࣪ ˖ •ᴗ• 16 •ᴗ• | ♓︎ pisces ♓︎ ⋆˖⁺‧₊☽◯☾₊‧⁺˖⋆ ❀˖° art 🎨 ❀˖° ˚ʚ♡ɞ˚ music 🎵 ˚ʚ♡ɞ˚ | ♡ AMBESSA♡</p>
       </section>
+      <hr class="staff-separator">
     </div>
   </div>
 
   <a href="index.html" class="back-button">🔙 Back to Main</a>
+
+  <!-- JavaScript for fading out the image -->
+  <script>
+    window.onload = function() {
+      const fadeOverlay = document.querySelector('.fade-overlay');
+      setTimeout(() => {
+        fadeOverlay.classList.add('fade-out');
+      }, 100);
+    };
+  </script>
 </body>
 </html>
