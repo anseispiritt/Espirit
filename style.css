@@ -13,6 +13,49 @@ body {
   text-align: center;
 }
 
+/* Fade Image Overlay Styles */
+.fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 4s ease-out;
+}
+
+.fade-image {
+  width: 150px; /* Adjust the size of the image */
+  height: 150px;
+  border-radius: 50%;
+  animation: fadeOut 4s forwards;
+}
+
+/* Fading out the image */
+@keyframes fadeOut {
+  0% {
+    opacity: 1; /* Fully visible at the start */
+  }
+  50% {
+    opacity: 0.5; /* Halfway transparent */
+  }
+  100% {
+    opacity: 0; /* Fully transparent at the end */
+  }
+}
+
+
+/* Remove the overlay after fade-out */
+.fade-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Header Styling */
 header {
   margin-top: 40px;
