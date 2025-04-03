@@ -3,90 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Espirit Links</title>
+  <title>Espirit Game</title>
   
   <!-- Favicon -->
   <link rel="icon" href="https://i.postimg.cc/SxY1FbGv/standard.webp" type="image/webp" />
   
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* General styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffcc00, #ff6f61, #6a5acd);
+      background-size: 300% 300%;
+      animation: gradientAnimation 10s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .game-container {
+      width: 80%;
+      max-width: 800px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      text-align: center;
+      position: relative;
+    }
+
+    .game-frame {
+      width: 100%;
+      height: 500px;
+      border: none;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border-top: 1px solid #ddd;
+    }
+
+    .back-button, .fullscreen-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ffcc00;
+      color: #333;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover, .fullscreen-button:hover {
+      background-color: #ffb300;
+      color: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+  </style>
 </head>
-<body class="index">
-  <header class="header">
-    <!-- Image beside the site title -->
-    <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="server-logo">
-    <h1>Espirit Links</h1>
-    <p class="subheading">Your one-stop hub for all Espirit server info!</p>
+<body>
+  <div class="game-container">
+    <!-- Game iframe -->
+    <iframe 
+      src="https://anseispiritt.github.io/wes-rooftop/" 
+      class="game-frame" 
+      title="Espirit Game" 
+      id="gameFrame">
+    </iframe>
 
-    <!-- Visits Counter -->
-    <div class="visits-counter" id="visitsCounter">Visits: Loading...</div>
-  </header>
-
-  <div class="content-container">
-    <div class="box">
-      <nav>
-        <ul class="nav-links">
-          <li><a href="staff.html" class="button-link">Espirit - 👥 Staff</a></li>
-          <li><a href="rules.html" class="button-link">Espirit - 📜 Rules</a></li>
-          <li><a href="server.html" class="button-link">Espirit - 🌐 Server Info</a></li>
-          <li><a href="game.html" class="button-link">Espirit - 🎮 Game</a></li>
-        </ul>
-      </nav>
+    <!-- Buttons below the game box -->
+    <div class="button-container">
+      <a href="index.html" class="back-button">Back to Main</a>
+      <button class="fullscreen-button" onclick="toggleFullscreen()">Full Screen</button>
     </div>
   </div>
 
-  <footer>
-    <p>&copy; 2025 Espirit. All Rights Reserved.</p>
-  </footer>
-
-  <style>
-    /* Style for the visits counter */
-    .visits-counter {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #ffcc00;
-      color: #333;
-      padding: 10px 15px;
-      border-radius: 5px;
-      font-size: 1rem;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-  </style>
-
   <script>
-    // Fetch visit count from countapi.xyz
-    const namespace = "espirit-links"; // Replace with a unique namespace for your site
-    const key = "visits";
-
-    // Initialize the counter to start at 518 if it doesn't exist
-    fetch(`https://api.countapi.xyz/get/${namespace}/${key}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.value === undefined) {
-          // Set the initial value to 518
-          fetch(`https://api.countapi.xyz/set/${namespace}/${key}?value=518`)
-            .then(() => incrementVisitCount());
-        } else {
-          incrementVisitCount();
-        }
-      })
-      .catch(error => {
-        console.error("Error initializing visit count:", error);
-        document.getElementById("visitsCounter").textContent = "Visits: Error";
-      });
-
-    // Increment the visit count
-    function incrementVisitCount() {
-      fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById("visitsCounter").textContent = `Visits: ${data.value}`;
-        })
-        .catch(error => {
-          console.error("Error incrementing visit count:", error);
-          document.getElementById("visitsCounter").textContent = "Visits: Error";
-        });
+    function toggleFullscreen() {
+      const iframe = document.getElementById('gameFrame');
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.mozRequestFullScreen) { // Firefox
+        iframe.mozRequestFullScreen();
+      } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) { // IE/Edge
+        iframe.msRequestFullscreen();
+      }
     }
   </script>
 </body>
