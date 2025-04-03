@@ -18,7 +18,7 @@
     <p class="subheading">Your one-stop hub for all Espirit server info!</p>
 
     <!-- Visits Counter -->
-    <div class="visits-counter" id="visitsCounter">Visits: 518</div>
+    <div class="visits-counter" id="visitsCounter">Visits: Loading...</div>
   </header>
 
   <div class="content-container">
@@ -73,7 +73,7 @@
       })
       .catch(error => {
         console.error("Error initializing visit count:", error);
-        document.getElementById("visitsCounter").textContent = "Visits: 518";
+        document.getElementById("visitsCounter").textContent = "Visits: Error";
       });
 
     // Increment the visit count
@@ -85,7 +85,7 @@
         })
         .catch(error => {
           console.error("Error incrementing visit count:", error);
-          document.getElementById("visitsCounter").textContent = "Visits: 518";
+          document.getElementById("visitsCounter").textContent = "Visits: Error";
         });
     }
   </script>
