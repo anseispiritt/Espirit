@@ -16,6 +16,9 @@
     <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="server-logo">
     <h1>Espirit Links</h1>
     <p class="subheading">Your one-stop hub for all Espirit server info!</p>
+
+    <!-- Visits Counter -->
+    <div class="visits-counter" id="visitsCounter">Visits: 518</div>
   </header>
 
   <div class="content-container">
@@ -34,5 +37,57 @@
   <footer>
     <p>&copy; 2025 Espirit. All Rights Reserved.</p>
   </footer>
+
+  <style>
+    /* Style for the visits counter */
+    .visits-counter {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ffcc00;
+      color: #333;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+
+  <script>
+    // Fetch visit count from countapi.xyz
+    const namespace = "espirit-links"; // Replace with a unique namespace for your site
+    const key = "visits";
+
+    // Initialize the counter to start at 518 if it doesn't exist
+    fetch(`https://api.countapi.xyz/get/${namespace}/${key}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.value === undefined) {
+          // Set the initial value to 518
+          fetch(`https://api.countapi.xyz/set/${namespace}/${key}?value=518`)
+            .then(() => incrementVisitCount());
+        } else {
+          incrementVisitCount();
+        }
+      })
+      .catch(error => {
+        console.error("Error initializing visit count:", error);
+        document.getElementById("visitsCounter").textContent = "Visits: 518";
+      });
+
+    // Increment the visit count
+    function incrementVisitCount() {
+      fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("visitsCounter").textContent = `Visits: ${data.value}`;
+        })
+        .catch(error => {
+          console.error("Error incrementing visit count:", error);
+          document.getElementById("visitsCounter").textContent = "Visits: 518";
+        });
+    }
+  </script>
 </body>
 </html>
