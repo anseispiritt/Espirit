@@ -20,6 +20,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
     }
 
@@ -29,75 +30,173 @@
       100% { background-position: 0% 50%; }
     }
 
-    .game-container {
+    .box-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
       width: 80%;
       max-width: 800px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-      text-align: center;
-      position: relative;
     }
 
-    .game-frame {
+    .game-box {
+      width: 100%;
+      height: 150px;
+      background-color: black;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .game-box:hover {
+      transform: scale(1.05);
+      background-color: #333;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 80%;
+      max-width: 800px;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    iframe {
       width: 100%;
       height: 500px;
       border: none;
     }
 
-    .button-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background-color: #f4f4f4;
-      border-top: 1px solid #ddd;
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    .back-button, .fullscreen-button {
-      display: inline-block;
+    .close-button:hover {
+      background-color: #ff1a1a;
+    }
+
+    .fullscreen-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .fullscreen-button:hover {
+      background-color: #45a049;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
       padding: 10px 20px;
       background-color: #ffcc00;
       color: #333;
-      text-decoration: none;
-      font-size: 1.2rem;
-      font-weight: bold;
+      border: none;
       border-radius: 5px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    .back-button:hover, .fullscreen-button:hover {
+    .back-button:hover {
       background-color: #ffb300;
-      color: #fff;
-      transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     }
   </style>
 </head>
 <body>
-  <div class="game-container">
-    <!-- Game iframe -->
-    <iframe 
-      src="https://anseispiritt.github.io/wes-rooftop/" 
-      class="game-frame" 
-      title="Espirit Game" 
-      id="gameFrame">
-    </iframe>
+    <div class="box-grid">
+        <div class="game-box" onclick="openGame('https://anseispiritt.github.io/wes-rooftop/')">rooftop</div>
+        <div class="game-box" onclick="openGame('https://florr.io')">florr</div>
+        <div class="game-box" onclick="openGame('https://flowr.fun')">flowr</div>
+        <div class="game-box" onclick="openGame('https://discord.com')">discord</div>
+        <div class="game-box" onclick="openGame('https://woomy-online.glitch.me/#eyJzZXJ2ZXIiOiIyZG9tLmpzIn0=')">woomy arras</div>
+        <div class="game-box" onclick="openGame('')">Empty</div>
+        <div class="game-box" onclick="openGame('')">Empty</div>
+        <div class="game-box" onclick="openGame('')">Empty</div>
+        <div class="game-box" onclick="openGame('')">Empty</div>
+      </div>
 
-    <!-- Buttons below the game box -->
-    <div class="button-container">
-      <a href="index.html" class="back-button">Back to Main</a>
+  <!-- Modal for displaying the game -->
+  <div id="gameModal" class="modal">
+    <div class="modal-content">
+      <iframe id="gameFrame" src="" frameborder="0"></iframe>
+      <button class="close-button" onclick="closeGame()">Close</button>
       <button class="fullscreen-button" onclick="toggleFullscreen()">Full Screen</button>
     </div>
   </div>
 
+  <!-- Back to Main Button -->
+  <button class="back-button" onclick="goBackToMain()">Back to Main</button>
+
   <script>
+    // Function to open the game in the modal
+    function openGame(link) {
+      if (!link) {
+        alert("No game link assigned to this box yet!");
+        return;
+      }
+      const modal = document.getElementById("gameModal");
+      const iframe = document.getElementById("gameFrame");
+      iframe.src = link;
+      modal.style.display = "flex";
+    }
+
+    // Function to close the game modal
+    function closeGame() {
+      const modal = document.getElementById("gameModal");
+      const iframe = document.getElementById("gameFrame");
+      iframe.src = ""; // Clear the iframe source
+      modal.style.display = "none";
+    }
+
+    // Function to toggle fullscreen mode
     function toggleFullscreen() {
-      const iframe = document.getElementById('gameFrame');
+      const iframe = document.getElementById("gameFrame");
       if (iframe.requestFullscreen) {
         iframe.requestFullscreen();
       } else if (iframe.mozRequestFullScreen) { // Firefox
@@ -107,6 +206,11 @@
       } else if (iframe.msRequestFullscreen) { // IE/Edge
         iframe.msRequestFullscreen();
       }
+    }
+
+    // Function to go back to the main page
+    function goBackToMain() {
+      window.location.href = "index.html";
     }
   </script>
 </body>
