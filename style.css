@@ -1,7 +1,13 @@
-/* Universal Body Styling */
+/* Universal Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: 'Roboto', sans-serif;
-  color: white;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
   margin: 0;
   padding: 0;
   display: flex;
@@ -9,32 +15,51 @@ body {
   align-items: center;
   min-height: 100vh;
   flex-direction: column;
-  background: linear-gradient(to bottom, #2ecc71, #3498db); /* Gradient background */
+  background: linear-gradient(135deg, #1e3c72, #2a5298, #1e3c72);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite;
   text-align: center;
+  overflow-x: hidden;
+}
+
+/* Gradient Animation */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Header Styling */
 header {
   margin-top: 40px;
+  text-align: center;
 }
 
 .server-logo {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   margin-bottom: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.server-logo:hover {
+  transform: scale(1.1);
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   font-family: 'Poppins', sans-serif;
   margin-bottom: 10px;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .subheading {
   font-size: 1.5rem;
   font-weight: 300;
   color: #f1f1f1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Content Container */
@@ -45,73 +70,73 @@ h1 {
 
 .box {
   display: inline-block;
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  width: 80%;
-  max-width: 600px;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
+  width: 95%;
+  max-width: 1000px;
+  backdrop-filter: blur(15px);
+  overflow: hidden; /* Ensures content stays inside the box */
+  text-align: left; /* Aligns text neatly inside */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.nav-links {
-  list-style: none;
-  padding: 0;
+.box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
 }
 
-.nav-links li {
-  margin: 20px 0;
+.box section {
+  margin-bottom: 30px;
 }
 
-.button-link {
-  display: inline-block;
-  padding: 15px 30px;
-  background-color: #ffcc00;
-  color: #333;
+.box p, .box ul, .box li {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #f1f1f1;
+  word-wrap: break-word; /* Ensures long text wraps inside the box */
+}
+
+.box ul {
+  padding-left: 20px;
+}
+
+.box a {
+  color: #ffcc00;
   text-decoration: none;
-  font-size: 1.8rem;
   font-weight: bold;
-  border-radius: 10px;
+}
+
+.box a:hover {
+  text-decoration: underline;
+}
+
+/* Button Styling */
+.back-button, .button-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  color: white;
+  border-radius: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.button-link:hover {
-  background-color: #ffb300;
-  color: #fff;
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+.back-button:hover, .button-link:hover {
+  background: linear-gradient(135deg, #ee0979, #ff6a00);
+  transform: scale(1.1);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
 }
 
-.button-link:active {
-  background-color: #ff9900;
-  transform: scale(1);
-}
-
-/* Footer Styling */
-footer {
-  margin-top: 40px;
-  font-size: 1rem;
-  color: #f1f1f1;
-  font-weight: 300;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .server-logo {
-    width: 80px;
-    height: 80px;
-  }
-
-  h1 {
-    font-size: 3rem;
-  }
-
-  .button-link {
-    font-size: 1.6rem;
-    padding: 12px 25px;
-  }
+.back-button:active, .button-link:active {
+  transform: scale(0.95);
 }
 
 /* Staff Member Specific Styles */
@@ -123,87 +148,54 @@ footer {
 }
 
 .staff-avatar {
-  width: 30px;  /* Smaller size for profile pictures */
-  height: 30px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin-right: 15px;
+  margin-right: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .staff-member p {
-  font-size: 1rem;  /* Adjusted font size for better alignment */
+  font-size: 1.2rem;
   margin-left: 10px;
+  color: #f1f1f1;
+  word-wrap: break-word;
 }
 
 /* Separator Styling */
 .staff-separator {
   border: none;
-  border-top: 1px solid #fff;  /* Creates a line between staff members */
-  margin: 10px 0;
+  border-top: 1px solid #fff;
+  margin: 20px 0;
+  opacity: 0.5;
 }
 
-/* Back Button Styling */
-.back-button {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #444;
-  color: white;
-  border-radius: 10px;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .server-logo {
+    width: 80px;
+    height: 80px;
+  }
 
-.back-button:hover {
-  background-color: #666;
-}
+  h1 {
+    font-size: 2.5rem;
+  }
 
-/* Universal Box Styling for All Pages */
-.box {
-  display: inline-block;
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  width: 80%;
-  max-width: 600px;
-  margin-bottom: 30px;
-}
+  .box {
+    padding: 20px;
+  }
 
-.box h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
+  .staff-avatar {
+    width: 60px;
+    height: 60px;
+  }
 
-.box ul {
-  list-style: none;
-  padding: 0;
-}
+  .staff-member p {
+    font-size: 1rem;
+  }
 
-.box li {
-  font-size: 1.5rem;
-  margin: 10px 0;
-}
-
-a {
-  color: #ffcc00;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Page-Specific Styles */
-.index {
-  background-color: #2ecc71; /* Green background for index page */
-}
-
-.staff {
-  background-color: #e74c3c; /* Red background for staff page */
-}
-
-.rules {
-  background-color: #f39c12; /* Yellow background for rules page */
-}
-
-.server {
-  background-color: #3498db; /* Blue background for server info page */
+  .back-button, .button-link {
+    font-size: 1.2rem;
+    padding: 12px 25px;
+  }
 }
