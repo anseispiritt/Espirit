@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donate to Espirit</title>
+  <script src="https://www.paypal.com/sdk/js?client-id=AX-Qv7vFC6Q0jdgsjlU5TmSRo6FBl3i1ZNEC_zBmmP1peB2BbEwc07_CK4hgtAIzF4J5JGHTFfTbM88z&components=buttons,hosted-fields&enable-funding=card&disable-funding=paylater"></script>
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #ff4e4e;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 18px;
+      color: #bbb;
+      margin-bottom: 40px;
+    }
+    .amount-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .amount-button {
+      background-color: #ff4e4e;
+      border: none;
+      color: white;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .amount-button.selected {
+      outline: 3px solid white;
+    }
+    input[type="number"] {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      width: 120px;
+      text-align: center;
+      font-size: 16px;
+    }
+    .payment-select {
+      margin-top: 30px;
+    }
+    .payment-select button {
+      background-color: #222;
+      border: 2px solid #ff4e4e;
+      color: #ff4e4e;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin: 0 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .payment-select button.active {
+      background-color: #ff4e4e;
+      color: #fff;
+    }
+    #card-container {
+      display: none;
+      max-width: 400px;
+      margin: 30px auto;
+      background: #1a1a1a;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 0 20px #ff4e4e44;
+    }
+    .field-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .field-label {
+      color: #ff4e4e;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .paypal-hosted-field, input.hosted-input {
+      padding: 12px;
+      border-radius: 10px;
+      background: #0f0f0f;
+      color: white;
+      border: 1px solid #444;
+      width: 100%;
+    }
+    #card-button {
+      background-color: #ff4e4e;
+      border: none;
+      color: white;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .footer {
+      margin-top: 80px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Support Espirit ❤️</h1>
+  <p>Select an amount and choose a payment method</p>
+
+  <div class="amount-buttons">
+    <button class="amount-button" onclick="selectAmount(this, 5)">💵 $5</button>
+    <button class="amount-button" onclick="selectAmount(this, 10)">💸 $10</button>
+    <button class="amount-button" onclick="selectAmount(this, 20)">💰 $20</button>
+    <button class="amount-button" onclick="selectAmount(this, 50)">🤑 $50</button>
+    <input type="number" id="customAmount" placeholder="Custom $" min="1" oninput="selectCustomAmount(this)">
+  </div>
+
+  <div class="payment-select">
+    <button onclick="showPayMethod('paypal')" id="paypalBtn" class="active">Pay with PayPal</button>
+    <button onclick="showPayMethod('card')" id="cardBtn">Pay with Card</button>
+  </div>
+
+  <div id="paypal-button-container"></div>
+
+  <div id="card-container">
+    <div class="field-group">
+      <div class="field-label">First Name</div>
+      <input id="first-name" class="hosted-input" placeholder="John" />
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Last Name</div>
+      <input id="last-name" class="hosted-input" placeholder="Doe" />
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Card Number</div>
+      <div id="card-number" class="paypal-hosted-field"></div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">CVV #</div>
+      <div id="cvv" class="paypal-hosted-field"></div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">EXP MM/YY</div>
+      <div id="expiration-date" class="paypal-hosted-field"></div>
+    </div>
+
+    <button id="card-button">Donate with Card</button>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 Espirit. Fund the chaos.
+  </div>
+
+  <script>
+    let selectedAmount = 10;
+
+    function selectAmount(button, amount) {
+      selectedAmount = amount;
+      document.querySelectorAll('.amount-button').forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+      document.getElementById("customAmount").value = '';
+      renderButtons();
+    }
+
+    function selectCustomAmount(input) {
+      selectedAmount = parseFloat(input.value) || 0;
+      document.querySelectorAll('.amount-button').forEach(btn => btn.classList.remove('selected'));
+      renderButtons();
+    }
+
+    function showPayMethod(method) {
+      document.getElementById('card-container').style.display = method === 'card' ? 'block' : 'none';
+      document.getElementById('paypal-button-container').style.display = method === 'paypal' ? 'block' : 'none';
+      document.getElementById('paypalBtn').classList.toggle('active', method === 'paypal');
+      document.getElementById('cardBtn').classList.toggle('active', method === 'card');
+    }
+
+    function renderButtons() {
+      document.getElementById('paypal-button-container').innerHTML = '';
+      paypal.Buttons({
+        style: {
+          layout: 'vertical',
+          color: 'gold',
+          shape: 'pill',
+          label: 'donate',
+          tagline: false
+        },
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: selectedAmount.toFixed(2)
+              }
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            alert('Donation complete. Thank you, ' + details.payer.name.given_name + '!');
+          });
+        }
+      }).render('#paypal-button-container');
+    }
+
+    renderButtons();
+
+    paypal.HostedFields.render({
+      createOrder: () => {
+        return fetch("https://www.paypal.com/checkoutnow?token=ORDERID"); // Replace with real order logic
+      },
+      styles: {
+        input: {
+          color: "#ffffff",
+          fontSize: "16px"
+        },
+        ":focus": {
+          color: "#ff4e4e"
+        }
+      },
+      fields: {
+        number: {
+          selector: "#card-number"
+        },
+        cvv: {
+          selector: "#cvv"
+        },
+        expirationDate: {
+          selector: "#expiration-date"
+        }
+      }
+    }).then(hostedFieldsInstance => {
+      document.getElementById("card-button").addEventListener("click", () => {
+        hostedFieldsInstance.submit({
+          cardholderName: `${document.getElementById("first-name").value} ${document.getElementById("last-name").value}`
+        }).then(payload => {
+          alert("Card donation complete!");
+        }).catch(err => {
+          alert("Something went wrong: " + err.message);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
