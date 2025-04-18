@@ -2,25 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Espirit Links</title>
-  
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Espirit Links" />
-  <meta property="og:description" content="Espirit website with links for information/games!" />
-  <meta property="og:image" content="https://i.postimg.cc/J0HzWG8Q/Chat-GPT-Image-Apr-13-2025-08-36-04-AM.png" />
-  <meta property="og:url" content="https://i.postimg.cc/J0HzWG8Q/Chat-GPT-Image-Apr-13-2025-08-36-04-AM.png" /> <!-- Replace with your actual website URL -->
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  
-  <!-- Favicon -->
-  <link rel="icon" href="https://i.postimg.cc/J0HzWG8Q/Chat-GPT-Image-Apr-13-2025-08-36-04-AM.png" type="image/webp" />
-  
+  <link rel="icon" href="https://i.postimg.cc/SxY1FbGv/standard.webp" type="image/webp" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .discord-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    .logout-button, .login-button {
+      background-color: #5865F2;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .username {
+      font-weight: bold;
+      color: white;
+    }
+  </style>
 </head>
 <body class="index">
+
+  <!-- TOP RIGHT LOGIN/USER INFO -->
+  <div class="top-right" id="user-info">
+    <!-- Content injected by JS -->
+  </div>
+
   <header class="header">
-    <img src="https://i.postimg.cc/J0HzWG8Q/Chat-GPT-Image-Apr-13-2025-08-36-04-AM.png" alt="Espirit Logo" class="server-logo">
+    <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="server-logo">
     <h1>Espirit Links</h1>
     <p class="subheading">Your one-stop hub for all Espirit server info!</p>
   </header>
@@ -45,7 +69,32 @@
   </div>
 
   <footer>
-    <p>&copy; Espirit Discord/Bot Dev/Coder: Wesley/Spirit.</p>
+    <p>&copy; 2025 Espirit. All Rights Reserved.</p>
   </footer>
+
+  <script>
+    async function loadUser() {
+      try {
+        const res = await fetch('http://localhost:3000/user', { credentials: 'include' });
+        const data = await res.json();
+
+        if (data.username) {
+          document.getElementById('user-info').innerHTML = `
+            <span class="username">${data.username}</span>
+            <img class="discord-avatar" src="https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png" alt="Avatar" />
+            <a class="logout-button" href="http://localhost:3000/logout">Logout</a>
+          `;
+        } else {
+          throw new Error();
+        }
+      } catch (e) {
+        document.getElementById('user-info').innerHTML = `
+          <a class="login-button" href="http://localhost:3000/auth/discord">Login with Discord</a>
+        `;
+      }
+    }
+
+    loadUser();
+  </script>
 </body>
 </html>
