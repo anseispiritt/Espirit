@@ -1,109 +1,98 @@
-// server.js
-
 const express = require('express');
-const session = require('express-session');
-const axios = require('axios');
 const path = require('path');
+const axios = require('axios');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const app = express();
+const port = process.env.PORT || 3000;
 
-// Replace with your actual Discord client ID, client secret, and redirect URI
 const CLIENT_ID = '1362597204891795456';
 const CLIENT_SECRET = 'qcAmq2XmJnPL225qupHVK7J8POuPM2SR';
 const REDIRECT_URI = 'https://espirit.onrender.com/callback';
+const DISCORD_API_URL = 'https://discord.com/api/v10';
 
-// Session middleware
-app.use(
-  session({
-    secret: 'qcAmq2XmJnPL225qupHVK7J8POuPM2SR', // Keep this secret safe
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+app.use(cookieParser());
+app.use(session({
+  secret: 'your-session-secret',
+  resave: false,
+  saveUninitialized: true
+}));
 
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Route to initiate Discord OAuth2 authentication with email scope
-app.get('/auth/discord', (req, res) => {
-  const authorizeUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
-    REDIRECT_URI
-  )}&response_type=code&scope=identify+email`; // Added email scope
-  res.redirect(authorizeUrl);
+// Serve the index.html file at root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Callback route for Discord OAuth2
+// OAuth - Redirect to Discord's authorization URL
+app.get('/auth/discord', (req, res) => {
+  const redirectUri = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=identify+email`;
+  res.redirect(redirectUri);
+});
+
+// OAuth callback route
 app.get('/callback', async (req, res) => {
   const code = req.query.code;
-  if (!code) return res.redirect('/');
 
   try {
-    // Exchange code for access token
-    const tokenResponse = await axios.post(
-      'https://discord.com/api/oauth2/token',
-      new URLSearchParams({
+    // Get the access token
+    const tokenResponse = await axios.post('https://discord.com/api/v10/oauth2/token', null, {
+      params: {
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
-        grant_type: 'authorization_code',
         code,
+        grant_type: 'authorization_code',
         redirect_uri: REDIRECT_URI,
-        scope: 'identify+email', // Include email scope
-      }),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      }
-    );
-
-    const accessToken = tokenResponse.data.access_token;
-
-    // Fetch user information
-    const userResponse = await axios.get('https://discord.com/api/users/@me', {
+        scope: 'identify email',
+      },
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
 
-    // Fetch email
-    const emailResponse = await axios.get('https://discord.com/api/v9/users/@me/email', {
+    const { access_token } = tokenResponse.data;
+
+    // Use the access token to get user info
+    const userResponse = await axios.get(`${DISCORD_API_URL}/users/@me`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${access_token}`,
       },
     });
 
-    // Combine user info and email
-    const userData = {
-      ...userResponse.data,
-      email: emailResponse.data.email, // Add email to user data
+    const user = userResponse.data;
+
+    // Store user info in session
+    req.session.user = {
+      id: user.id,
+      username: user.username,
+      avatar: user.avatar,
     };
 
-    // Store user information in session
-    req.session.user = userData;
     res.redirect('/');
   } catch (error) {
-    console.error('Error during Discord OAuth2 callback:', error);
-    res.redirect('/');
-  }
-});
-
-// Route to get user information
-app.get('/user', (req, res) => {
-  if (req.session.user) {
-    res.json(req.session.user);
-  } else {
-    res.json({});
+    console.error('Error during OAuth callback:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
 // Logout route
 app.get('/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.redirect('/');
-  });
+  req.session.destroy();
+  res.redirect('/');
 });
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// Route to get user info
+app.get('/user', (req, res) => {
+  if (req.session.user) {
+    res.json(req.session.user);
+  } else {
+    res.status(401).json({ message: 'Not logged in' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
