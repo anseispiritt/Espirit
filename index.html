@@ -34,11 +34,6 @@
       font-weight: bold;
       color: white;
     }
-    .email {
-      color: white;
-      font-size: 0.9em;
-      margin-top: 5px;
-    }
   </style>
 </head>
 <body class="index">
@@ -80,22 +75,21 @@
   <script>
     async function loadUser() {
       try {
-        const res = await fetch('https://espirit.onrender.com/user', { credentials: 'include' });
+        const res = await fetch('/user', { credentials: 'include' });
         const data = await res.json();
 
         if (data.username) {
           document.getElementById('user-info').innerHTML = `
             <span class="username">${data.username}</span>
             <img class="discord-avatar" src="https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png" alt="Avatar" />
-            <p class="email">${data.email}</p>
-            <a class="logout-button" href="https://espirit.onrender.com/logout">Logout</a>
+            <a class="logout-button" href="/logout">Logout</a>
           `;
         } else {
           throw new Error();
         }
       } catch (e) {
         document.getElementById('user-info').innerHTML = `
-          <a class="login-button" href="https://discord.com/oauth2/authorize?client_id=1362597204891795456&response_type=code&redirect_uri=https%3A%2F%2Fespirit.onrender.com%2Fcallback&scope=identify+email">Login with Discord</a>
+          <a class="login-button" href="/auth/discord">Login with Discord</a>
         `;
       }
     }
