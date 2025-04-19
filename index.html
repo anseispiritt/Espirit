@@ -75,14 +75,14 @@
   <script>
     async function loadUser() {
       try {
-        const res = await fetch('http://localhost:3000/user', { credentials: 'include' });
+        const res = await fetch('https://espirit.onrender.com/user', { credentials: 'include' });
         const data = await res.json();
 
         if (data.username) {
           document.getElementById('user-info').innerHTML = `
             <span class="username">${data.username}</span>
             <img class="discord-avatar" src="https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png" alt="Avatar" />
-            <a class="logout-button" href="http://localhost:3000/logout">Logout</a>
+            <a class="logout-button" href="https://espirit.onrender.com/logout">Logout</a>
           `;
         } else {
           throw new Error();
