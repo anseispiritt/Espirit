@@ -1,18 +1,23 @@
 {
-  "name": "espirit-oauth",
+  "name": "espirit-auth",
   "version": "1.0.0",
+  "description": "Discord OAuth and ticket system for Espirit",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "passport": "^0.6.0",
-    "passport-discord": "^0.1.4",
+    "axios": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "ejs": "^3.1.8"
-    "axios": "^1.6.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "fs-extra": "^11.1.1",
+    "path": "^0.12.7",
+    "cookie-parser": "^1.4.6",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0",
+    "uuid": "^9.0.0"
   }
 }
