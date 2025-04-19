@@ -3,10 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Espirit Links</title>
-  <link rel="icon" href="https://i.postimg.cc/SxY1FbGv/standard.webp" type="image/webp" />
+  <title>Espirit</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    body {
+      background-color: #1a1a1a;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
     .top-right {
       position: absolute;
       top: 20px;
@@ -36,41 +42,13 @@
     }
   </style>
 </head>
-<body class="index">
-
-  <!-- TOP RIGHT LOGIN/USER INFO -->
+<body>
   <div class="top-right" id="user-info">
-    <!-- Content injected by JS -->
+    <!-- Login info will be injected here -->
   </div>
 
-  <header class="header">
-    <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="server-logo">
-    <h1>Espirit Links</h1>
-    <p class="subheading">Your one-stop hub for all Espirit server info!</p>
-  </header>
-
-  <div class="content-container">
-    <div class="grid-container">
-      <!-- Left Column -->
-      <div class="left-column">
-        <a href="staff.html" class="button-link">Espirit - 👥 Staff</a>
-        <a href="rules.html" class="button-link">Espirit - 📜 Rules</a>
-        <a href="server.html" class="button-link">Espirit - 🌐 Server Info</a>
-        <a href="donate.html" class="button-link">Espirit - 💸 Donate</a>
-      </div>
-
-      <!-- Right Column -->
-      <div class="right-column">
-        <a href="game.html" class="button-link">Espirit - 🎮 Games</a>
-        <a href="unblock.html" class="button-link">Espirit - 🔒 Unblock</a>
-        <a href="about.html" class="button-link">Espirit - 😭 About Owner</a>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <p>&copy; 2025 Espirit. All Rights Reserved.</p>
-  </footer>
+  <h1>Welcome to Espirit</h1>
+  <p>Login with Discord to continue.</p>
 
   <script>
     async function loadUser() {
@@ -81,13 +59,13 @@
         if (data.username) {
           document.getElementById('user-info').innerHTML = `
             <span class="username">${data.username}</span>
-            <img class="discord-avatar" src="https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png" alt="Avatar" />
+            <img class="discord-avatar" src="https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png" />
             <a class="logout-button" href="/logout">Logout</a>
           `;
         } else {
           throw new Error();
         }
-      } catch (e) {
+      } catch {
         document.getElementById('user-info').innerHTML = `
           <a class="login-button" href="/auth/discord">Login with Discord</a>
         `;
