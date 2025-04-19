@@ -1,98 +1,82 @@
 const express = require('express');
-const path = require('path');
-const axios = require('axios');
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const app = express();
-const port = process.env.PORT || 3000;
+const axios = require('axios');
+const path = require('path');
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Replace these with your actual Discord app credentials
 const CLIENT_ID = '1362597204891795456';
 const CLIENT_SECRET = 'qcAmq2XmJnPL225qupHVK7J8POuPM2SR';
 const REDIRECT_URI = 'https://espirit.onrender.com/callback';
-const DISCORD_API_URL = 'https://discord.com/api/v10';
 
-app.use(cookieParser());
 app.use(session({
-  secret: 'your-session-secret',
+  secret: 'supersecretkey',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
 }));
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname)); // Serve index.html, style.css, etc. from root
 
-// Serve the index.html file at root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// OAuth - Redirect to Discord's authorization URL
 app.get('/auth/discord', (req, res) => {
-  const redirectUri = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=identify+email`;
-  res.redirect(redirectUri);
+  const scope = ['identify', 'email'].join(' ');
+  const redirect = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent(scope)}`;
+  res.redirect(redirect);
 });
 
-// OAuth callback route
 app.get('/callback', async (req, res) => {
   const code = req.query.code;
+  if (!code) return res.redirect('/');
 
   try {
-    // Get the access token
-    const tokenResponse = await axios.post('https://discord.com/api/v10/oauth2/token', null, {
-      params: {
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        code,
-        grant_type: 'authorization_code',
-        redirect_uri: REDIRECT_URI,
-        scope: 'identify email',
-      },
+    const params = new URLSearchParams();
+    params.append('client_id', CLIENT_ID);
+    params.append('client_secret', CLIENT_SECRET);
+    params.append('grant_type', 'authorization_code');
+    params.append('code', code);
+    params.append('redirect_uri', REDIRECT_URI);
+    params.append('scope', 'identify email');
+
+    const tokenRes = await axios.post('https://discord.com/api/oauth2/token', params, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
     });
 
-    const { access_token } = tokenResponse.data;
-
-    // Use the access token to get user info
-    const userResponse = await axios.get(`${DISCORD_API_URL}/users/@me`, {
+    const access_token = tokenRes.data.access_token;
+    const userRes = await axios.get('https://discord.com/api/users/@me', {
       headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+        Authorization: `Bearer ${access_token}`
+      }
     });
 
-    const user = userResponse.data;
-
-    // Store user info in session
-    req.session.user = {
-      id: user.id,
-      username: user.username,
-      avatar: user.avatar,
-    };
-
+    req.session.user = userRes.data;
     res.redirect('/');
-  } catch (error) {
-    console.error('Error during OAuth callback:', error);
-    res.status(500).send('Internal Server Error');
+  } catch (err) {
+    console.error(err);
+    res.send('Error during OAuth');
   }
 });
 
-// Logout route
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/');
-});
-
-// Route to get user info
 app.get('/user', (req, res) => {
   if (req.session.user) {
     res.json(req.session.user);
   } else {
-    res.status(401).json({ message: 'Not logged in' });
+    res.status(401).json({ error: 'Unauthorized' });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/');
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
