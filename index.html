@@ -4,16 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Espirit Links</title>
-  <link rel="icon" href="https://i.postimg.cc/Tw190ZLG/Chat-GPT-Image-Apr-13-2025-08-36-04-AM.png" type="image/webp" />
+  <link rel="icon" href="https://i.postimg.cc/SxY1FbGv/standard.webp" type="image/webp" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      background-color: #1e1e1e;
-      color: white;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
     .top-right {
       position: absolute;
       top: 20px;
@@ -41,60 +34,17 @@
       font-weight: bold;
       color: white;
     }
-    .header {
-      text-align: center;
-      padding: 30px;
-    }
-    .server-logo {
-      width: 80px;
-      height: 80px;
-    }
-    .subheading {
-      font-size: 1.2rem;
-      color: #ccc;
-    }
-    .content-container {
-      padding: 20px;
-    }
-    .grid-container {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    .left-column, .right-column {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 45%;
-    }
-    .button-link {
-      background-color: #333;
-      color: white;
-      padding: 12px;
-      border-radius: 8px;
-      text-align: center;
-      text-decoration: none;
-      transition: background-color 0.2s;
-    }
-    .button-link:hover {
-      background-color: #444;
-    }
-    footer {
-      text-align: center;
-      padding: 15px;
-      color: #999;
-    }
   </style>
 </head>
-<body>
+<body class="index">
 
   <!-- TOP RIGHT LOGIN/USER INFO -->
   <div class="top-right" id="user-info">
-    <!-- Will be replaced by JS -->
+    <!-- Content injected by JS -->
   </div>
 
   <header class="header">
-    <img src="https://i.postimg.cc/Tw190ZLG/Chat-GPT-Image-Apr-13-2025-08-36-04-AM.png" alt="Espirit Logo" class="server-logo">
+    <img src="https://i.postimg.cc/SxY1FbGv/standard.webp" alt="Espirit Logo" class="server-logo">
     <h1>Espirit Links</h1>
     <p class="subheading">Your one-stop hub for all Espirit server info!</p>
   </header>
@@ -125,14 +75,12 @@
   <script>
     async function loadUser() {
       try {
-        const res = await fetch('https://espirit.onrender.com/user', {
-          credentials: 'include'
-        });
+        const res = await fetch('https://espirit.onrender.com/user', { credentials: 'include' });
         const data = await res.json();
 
         if (data.username) {
           document.getElementById('user-info').innerHTML = `
-            <span class="username">Welcome, ${data.username}</span>
+            <span class="username">${data.username}</span>
             <img class="discord-avatar" src="https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png" alt="Avatar" />
             <a class="logout-button" href="https://espirit.onrender.com/logout">Logout</a>
           `;
@@ -141,7 +89,7 @@
         }
       } catch (e) {
         document.getElementById('user-info').innerHTML = `
-          <a class="login-button" href="https://discord.com/oauth2/authorize?client_id=1362597204891795456&response_type=code&redirect_uri=https%3A%2F%2Fespirit.onrender.com%2Fcallback&scope=identify+email">Login with Discord</a>
+          <a class="login-button" href="https://espirit.onrender.com/auth/discord">Login with Discord</a>
         `;
       }
     }
