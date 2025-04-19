@@ -25,7 +25,7 @@ passport.deserializeUser((obj, done) => done(null, obj));
 passport.use(new DiscordStrategy({
   clientID: '1362597204891795456',
   clientSecret: 'qcAmq2XmJnPL225qupHVK7J8POuPM2SR',
-  callbackURL: 'http://localhost:3000/callback',
+  callbackURL: 'https://espirit.onrender.com/callback',
   scope: ['identify', 'email']
 }, (accessToken, refreshToken, profile, done) => {
   profile.accessToken = accessToken;
